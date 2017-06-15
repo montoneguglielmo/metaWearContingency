@@ -143,8 +143,8 @@ low_pass_acc_non_cont = np.zeros(3)
 
 #Duration experiment :
 duration_baseline    = 0.0 #duration of the acquisition (in minute)
-duration_acquisition = 4.0 #duration of the acquisition (in minute)
-duration_extinction  = 1.0 #duration of the acquisition (in minute)
+duration_acquisition = 6.0 #duration of the acquisition (in minute)
+duration_extinction  = 2.0 #duration of the acquisition (in minute)
 end_baseline = duration_baseline * 60000  #time at which the baseline ends (in ms)
 end_acquisition = (duration_baseline + duration_acquisition) * 60000  #time at which the acquisition ends (in ms)
 end_extinction = (duration_baseline + duration_acquisition + duration_extinction) * 60000  #duration at which the extinction ends (in ms)
@@ -174,10 +174,10 @@ rm_non_cont = 0.0 #running mean non-contingent bracelet
 
 #Movements of the character (used in acquisition):
 #force_change = 0 #used to change manually the force applied to movements
-force = 0.02  #force applied to movements of the ball
+force = 0.04  #force applied to movements of the ball
 friction = 0.01  #friction applied to movements of the ball
 step_location = 0     #step of the movements of the ball
-max_displace = 15.0  #maximum displacement each ref_period
+max_displace = 20.0  #maximum displacement each ref_period
 
 
 ### SETTINGS ###
@@ -188,7 +188,8 @@ condition = raw_input("Condition done by the baby (R = right and L = left) : ") 
 sex       = raw_input("Sex of the baby (F = female and M = male) : ") #sex
 
 #Opening of a file :
-p = open("{ag}_{num}_{cond}.txt".format(ag=age, num=number, cond=condition), "w")
+save_dir = "/home/lisa/dataMetaExp/"
+p = open(save_dir + "{ag}_{num}_{cond}.txt".format(ag=age, num=number, cond=condition), "w")
 # Print the names of the columns :
 print("NUMBER AGE CONDITION SEX TIME PHASE ACC_X_CONT ACC_Y_CONT ACC_Z_CONT MOD_CONT RM_CONT ACC_X_NON_CONT ACC_Y_NON_CONT ACC_Z_NON_CONT MOD_NON_CONT RM_NON_CONT", end ="\n" , file=p)
 
@@ -378,7 +379,7 @@ balls_hist = []
 for bl in ball_lst:
         balls_hist.append(bl.pos_hist)
                         
-with gzip.open("{ag}_{num}_{cond}.pkl.gz".format(ag=age, num=number, cond=condition), "w") as f:
+with gzip.open(save_dir + "{ag}_{num}_{cond}.pkl.gz".format(ag=age, num=number, cond=condition), "w") as f:
         pickle.dump(balls_hist, f, protocol=pickle.HIGHEST_PROTOCOL)
 print("Done")
 
