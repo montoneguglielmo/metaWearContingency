@@ -14,9 +14,10 @@ import os
 import cPickle as pickle
 import gzip
 from ball_class import *
-from pymetawear.discover import select_device
+#from pymetawear.discover import select_device
 from pymetawear.client import MetaWearClient
 from pymetawear import libmetawear
+from attentionGather_class import *
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = '0,0'
 
@@ -29,8 +30,8 @@ print_name_acquisition = False
 print_name_extinction = False
 print_name_closing = False
 
-address_1 = 'DA:FA:3A:2B:36:A4'
-address_2 = 'D0:97:0F:A0:10:3B'
+address_1 = 'CF:F5:53:13:C7:1E'
+address_2 = 'CE:B3:19:9A:A2:E6'
 
 print("Connect to {0}...".format(address_1))
 client_1 = MetaWearClient(str(address_1), timeout=10.0, debug=False)
@@ -93,6 +94,15 @@ ky.sort()
 for bl in ky:
         class_name = geoObj[bl]['name']
         ball_lst.append(objNameToObjClass[class_name](**geoObj[bl]))
+
+#attention ghater
+file_audio = ['Kev1.ogg', 'Kev2.ogg', 'Kev3.ogg']
+screen_size = screen.get_size()
+attGath = att_gather(duration=1.5, period=60.0, screen_size=screen_size, n_repetition=2, volume=0.07, list_audio = file_audio)
+
+# attGath.audio[0].play()
+# time.sleep(3.0)
+# attGath.audio[0].stop()
 
 #Sounds :
 sounds = ["bg.ogg", "tiny2.ogg"] #sounds
@@ -188,7 +198,7 @@ condition = raw_input("Condition done by the baby (R = right and L = left) : ") 
 sex       = raw_input("Sex of the baby (F = female and M = male) : ") #sex
 
 #Opening of a file :
-save_dir = "/home/lisa/dataMetaExp/"
+save_dir = "../dataMetaExp/"
 p = open(save_dir + "{ag}_{num}_{cond}.txt".format(ag=age, num=number, cond=condition), "w")
 # Print the names of the columns :
 print("NUMBER AGE CONDITION SEX TIME PHASE ACC_X_CONT ACC_Y_CONT ACC_Z_CONT MOD_CONT RM_CONT ACC_X_NON_CONT ACC_Y_NON_CONT ACC_Z_NON_CONT MOD_NON_CONT RM_NON_CONT", end ="\n" , file=p)
@@ -201,7 +211,7 @@ font = pygame.font.Font(None, text_size)
 pygame.mixer.music.load(bg_sound)
 pygame.mixer.music.set_volume(volume_bg)
 mov_sound = pygame.mixer.Sound(mov_sound)
-mov_sound.set_volume (volume_mov_sound)
+mov_sound.set_volume(volume_mov_sound)
 
 
 ### PROGRAM ###
@@ -297,8 +307,11 @@ while exp:
     if (time.time() - last_screen_ref)*1000.0 > ref_period:     
         last_screen_ref = time.time()
         screen.fill((0, 0, 0))
-        for bl in ball_lst:
-                bl.draw(screen)
+        if attGath.attention_check(time.time()):
+            attGath.draw(screen)
+        else:
+          for bl in ball_lst:
+              bl.draw(screen)
         pygame.display.flip()
         
     ### BASELINE ###
