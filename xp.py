@@ -30,8 +30,8 @@ print_name_acquisition = False
 print_name_extinction = False
 print_name_closing = False
 
-address_1 = 'CF:F5:53:13:C7:1E'
-address_2 = 'CE:B3:19:9A:A2:E6'
+address_1 = 'D0:97:0F:A0:10:3B'
+address_2 = 'DA:FA:3A:2B:36:A4'
 
 print("Connect to {0}...".format(address_1))
 client_1 = MetaWearClient(str(address_1), timeout=10.0, debug=False)
@@ -96,9 +96,9 @@ for bl in ky:
         ball_lst.append(objNameToObjClass[class_name](**geoObj[bl]))
 
 #attention ghater
-file_audio = ['Kev1.ogg', 'Kev2.ogg', 'Kev3.ogg']
+file_audio = ['Kev4.ogg', 'Kev5.ogg', 'Kev6.ogg']
 screen_size = screen.get_size()
-attGath = att_gather(duration=1.5, period=60.0, screen_size=screen_size, n_repetition=2, volume=0.07, list_audio = file_audio)
+attGath = att_gather(duration=1.5, period=60.0, screen_size=screen_size, n_repetition=3, volume=0.3, list_audio = file_audio)
 
 # attGath.audio[0].play()
 # time.sleep(3.0)
