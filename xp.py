@@ -30,8 +30,8 @@ print_name_acquisition = False
 print_name_extinction = False
 print_name_closing = False
 
-address_1 = 'CE:B3:19:9A:A2:E6' #'D0:97:0F:A0:10:3B' #'CE:B3:19:9A:A2:E6'
-address_2 = 'CF:F5:53:13:C7:1E' #'DA:FA:3A:2B:36:A4' #'CF:F5:53:13:C7:1E'
+address_1 = 'D0:97:0F:A0:10:3B' #'CE:B3:19:9A:A2:E6'
+address_2 = 'DA:FA:3A:2B:36:A4' #'CF:F5:53:13:C7:1E'
 
 print("Connect to {0}...".format(address_1))
 client_1 = MetaWearClient(str(address_1), timeout=10.0, debug=False)
