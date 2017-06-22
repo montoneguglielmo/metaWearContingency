@@ -1,6 +1,7 @@
 import random
 import numpy as np
 import pygame
+import time
 from trajectory_class import * 
 
 trajNameToTrajClass = {'circle':circle_traj, 'straight':strait_traj}
@@ -15,16 +16,40 @@ class moving_obj(object):
         self.pos      = self.obj_traj.pos
         self.pos_hist = []
 
+        if 'draw_history' in kwargs:
+            self.period    = kwargs['draw_history']['period']
+            self.step_hist = 0
+        else:
+            self.period    = np.inf
+            self.step_hist = 0
+            
+        self.last_played  = time.time()
+        self.draw_history = False
+        
     def change_shape(self,**kwargs):
         pass
 
     def next_pos(self, disp, H, W):
+
+        if self.draw_history:
+            disp = np.linalg.norm(np.asarray(self.pos_hist[-self.step_hist + 1], dtype=float) - np.asarray(self.pos_hist[-self.step_hist], dtype=float))            
+            disp = int(disp)
+        else:
+            self.step_hist += 1
+            
         self.pos  = self.obj_traj.next_pos(obj=self, disp=disp, H=H, W=W)
         self.change_shape(disp=disp, H=H, W=W)
-
+        
+    
     def draw(self, screen, **kwargs):
         pass
 
+    def switch_draw(self, curr_time):
+        if (curr_time - self.last_played) > self.period:
+            self.last_played  = time.time()
+            self.draw_history = not self.draw_history 
+            self.lenght_hist  = len(self.pos_hist)
+            
     def save_pos(self):
         pos = [str(self.pos[0]), str(self.pos[1])]
         self.pos_hist.append(pos)

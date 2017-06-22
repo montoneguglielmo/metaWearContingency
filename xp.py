@@ -30,8 +30,8 @@ print_name_acquisition = False
 print_name_extinction = False
 print_name_closing = False
 
-address_1 = 'D0:97:0F:A0:10:3B'
-address_2 = 'DA:FA:3A:2B:36:A4'
+address_1 = 'CE:B3:19:9A:A2:E6' #'D0:97:0F:A0:10:3B' #'CE:B3:19:9A:A2:E6'
+address_2 = 'CF:F5:53:13:C7:1E' #'DA:FA:3A:2B:36:A4' #'CF:F5:53:13:C7:1E'
 
 print("Connect to {0}...".format(address_1))
 client_1 = MetaWearClient(str(address_1), timeout=10.0, debug=False)
@@ -88,17 +88,17 @@ geoObj={
         }
 }
 
-ball_lst = []
-ky = geoObj.keys()
-ky.sort()
-for bl in ky:
-        class_name = geoObj[bl]['name']
-        ball_lst.append(objNameToObjClass[class_name](**geoObj[bl]))
+# ball_lst = []
+# ky = geoObj.keys()
+# ky.sort()
+# for bl in ky:
+#         class_name = geoObj[bl]['name']
+#         ball_lst.append(objNameToObjClass[class_name](**geoObj[bl]))
 
 #attention ghater
-file_audio = ['Kev4.ogg', 'Kev5.ogg', 'Kev6.ogg']
+file_audio  = ['Kev4.ogg', 'Kev5.ogg', 'Kev6.ogg']
 screen_size = screen.get_size()
-attGath = att_gather(duration=1.5, period=60.0, screen_size=screen_size, n_repetition=3, volume=0.3, list_audio = file_audio)
+attGath     = att_gather(duration=1.5, period=60.0, screen_size=screen_size, n_repetition=3, volume=0.3, list_audio = file_audio)
 
 # attGath.audio[0].play()
 # time.sleep(3.0)
@@ -237,12 +237,19 @@ while not key_pressed:
          if e.type == KEYDOWN and e.key == K_SPACE:
             key_pressed = True
 
+ball_lst = []
+ky = geoObj.keys()
+ky.sort()
+for bl in ky:
+        class_name = geoObj[bl]['name']
+        ball_lst.append(objNameToObjClass[class_name](**geoObj[bl]))
+
 #Beginning of the experiment :
 t0 = time.time() #takes the time when the experiment starts
 step_location_float = 0.0
 old_step_location = 0
-last_screen_ref = time.time()
-last_change = time.time()
+last_screen_ref   = time.time()
+last_change       = time.time()
 ### MAIN LOOP ###
 while exp:
 
@@ -312,6 +319,7 @@ while exp:
         else:
           for bl in ball_lst:
               bl.draw(screen)
+              bl.switch_draw(time.time())
         pygame.display.flip()
         
     ### BASELINE ###
@@ -342,7 +350,7 @@ while exp:
                         step_location_float = max_displace
                 step_location = int(step_location_float)
                 last_change = time.time()
-
+                
                 for bl in ball_lst:
                         bl.next_pos(step_location, H, W)
                         bl.save_pos()
